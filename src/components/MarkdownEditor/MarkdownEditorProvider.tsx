@@ -1,4 +1,8 @@
 import React from 'react';
+import { BaseEditor, createEditor, Editor, Text, Transforms } from 'slate';
+import { Slate, withReact } from 'slate-react';
+import { markdownToSlate } from '../../serializers/markdownToSlate';
+import { slateToMarkdown } from '../../serializers/slateToMarkdown';
 
 export interface IMarkdownEditorProviderProps {
   value?: string;
@@ -8,14 +12,15 @@ export interface IMarkdownEditorProviderProps {
 }
 
 export interface IMarkdownEditorContextType {
-  markdown: string;
-  setMarkdown: (val: string) => void;
-  textareaRef: React.RefObject<HTMLTextAreaElement | null>;
+  editor: BaseEditor;
+  value: any; // TODO: type
+  setValue: (v: any) => void; // TODO: type
   actions: {
-    bold: () => void;
-    italic: () => void;
+    toggleBold: () => void;
+    toggleItalic: () => void;
     save: () => void;
   };
+  markdown: string;
 }
 
 export const MarkdownEditorContext = React.createContext<
@@ -24,40 +29,69 @@ export const MarkdownEditorContext = React.createContext<
 
 export const MarkdownEditorProvider = ({
   children,
-  value: controlledValue,
+  value,
   onChange,
   onSave
 }: IMarkdownEditorProviderProps) => {
-  const textareaRef = React.useRef<HTMLTextAreaElement | null>(null);
-  const [internalValue, setInternalValue] = React.useState(
-    controlledValue || ''
-  );
+  const editor = React.useMemo(() => withReact(createEditor()), []);
+  const initialValue = value
+    ? markdownToSlate(value)
+    : [{ type: 'paragraph', children: [{ text: '' }] }];
+  const [internalValue, setInternalValue] = React.useState(initialValue);
 
-  const markdown = controlledValue ?? internalValue;
-
-  const setMarkdown = (val: string) => {
-    onChange?.(val);
-    if (!controlledValue) {
-      setInternalValue(val);
-    }
+  const setValue = (newValue: any) => {
+    setInternalValue(newValue);
+    const md = slateToMarkdown(newValue);
+    onChange?.(md);
   };
 
+  const toggleFormat = React.useCallback(
+    (format: 'bold' | 'italic') => {
+      const [match] = Array.from(
+        Editor.nodes(editor, {
+          // TODO: fix types here.
+          // @ts-expect-error
+          match: (n) => Text.isText(n) && n[format] === true,
+          universal: true
+        })
+      );
+
+      if (match) {
+        Transforms.setNodes(
+          editor,
+          { [format]: false },
+          { match: Text.isText, split: true }
+        );
+      } else {
+        Transforms.setNodes(
+          editor,
+          { [format]: true },
+          { match: Text.isText, split: true }
+        );
+      }
+    },
+    [editor]
+  );
+
   const actions = {
-    bold: () => console.log('Set BOLD'),
-    italic: () => console.log('Set ITALIC'),
+    toggleBold: () => toggleFormat('bold'),
+    toggleItalic: () => toggleFormat('italic'),
     save: () => onSave?.()
   };
 
   return (
     <MarkdownEditorContext.Provider
       value={{
-        markdown,
-        textareaRef,
-        setMarkdown,
-        actions
+        editor,
+        value: internalValue,
+        setValue,
+        actions,
+        markdown: slateToMarkdown(internalValue)
       }}
     >
-      {children}
+      <Slate editor={editor} initialValue={internalValue} onChange={setValue}>
+        {children}
+      </Slate>
     </MarkdownEditorContext.Provider>
   );
 };
