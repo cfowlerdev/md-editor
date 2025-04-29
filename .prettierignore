@@ -1,0 +1,7 @@
+node-modules
+dist
+pnpm-lock.yaml
+docker-compose.yaml
+Dockerfile
+package.json
+public/mockServiceWorker.js
