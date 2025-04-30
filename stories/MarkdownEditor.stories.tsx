@@ -5,6 +5,7 @@ import {
   MarkdownEditorPreview
 } from '../src/components/MarkdownEditor';
 import { useMarkdownEditor } from '../src/hooks/useMarkdownEditor';
+import { coreMarkdownPlugins } from '../src/plugins';
 
 export default {
   title: 'MarkdownEditor/Basic',
@@ -12,13 +13,34 @@ export default {
 };
 
 const Toolbar = () => {
-  const { actions } = useMarkdownEditor();
+  const { editor, actions } = useMarkdownEditor();
 
   return (
-    <div style={{ marginBottom: 8, gap: 4, display: 'flex' }}>
-      <button onClick={actions.toggleBold}>Bold</button>
-      <button onClick={actions.toggleItalic}>Italic</button>
-      <button onClick={actions.save}>Save</button>
+    <div style={{ display: 'flex', gap: '8px', padding: '4px' }}>
+      <button
+        onMouseDown={(e) => {
+          e.preventDefault();
+          actions.toggleBold?.(editor);
+        }}
+      >
+        Bold
+      </button>
+      <button
+        onMouseDown={(e) => {
+          e.preventDefault();
+          actions.toggleItalic?.(editor);
+        }}
+      >
+        Italic
+      </button>
+      <button
+        onMouseDown={(e) => {
+          e.preventDefault();
+          actions.toggleCode?.(editor);
+        }}
+      >
+        Code
+      </button>
     </div>
   );
 };
@@ -30,7 +52,7 @@ export const DefaultEditor = () => {
     <MarkdownEditorProvider
       value={markdown}
       onChange={setMarkdown}
-      onSave={() => alert('Saved!')}
+      plugins={coreMarkdownPlugins}
     >
       <Toolbar />
       <div style={{ display: 'flex', gap: 16 }}>

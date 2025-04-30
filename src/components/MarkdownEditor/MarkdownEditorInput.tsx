@@ -1,32 +1,25 @@
-import React from 'react';
-import { Editable, RenderLeafProps } from 'slate-react';
-
-const Leaf: React.FunctionComponent<RenderLeafProps> = ({
-  attributes,
-  children,
-  leaf
-}) => {
-  //@ts-expect-error
-  if (leaf.bold) {
-    children = <strong>{children}</strong>;
-  }
-
-  //@ts-expect-error
-  if (leaf.italic) {
-    children = <em>{children}</em>;
-  }
-
-  //@ts-expect-error
-  if (leaf.underline) {
-    children = <u>{children}</u>;
-  }
-  return <span {...attributes}>{children}</span>;
-};
-
-const renderLeaf = (props: RenderLeafProps) => {
-  return <Leaf {...props} />;
-};
+import { Editable } from 'slate-react';
+import { useMarkdownEditor } from '../../hooks/useMarkdownEditor';
 
 export const MarkdownEditorInput = () => {
-  return <Editable renderLeaf={renderLeaf} />;
+  const { editor, plugins } = useMarkdownEditor();
+
+  return (
+    <Editable
+      renderLeaf={(props) => {
+        for (const plugin of plugins) {
+          if (plugin.renderLeaf) return plugin.renderLeaf(props);
+        }
+        return <span {...props.attributes}>{props.children}</span>;
+      }}
+      onKeyDown={(event) => {
+        for (const plugin of plugins) {
+          if (plugin.onKeyDown?.(event, editor)) {
+            event.preventDefault();
+            return;
+          }
+        }
+      }}
+    />
+  );
 };

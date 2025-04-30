@@ -1,14 +1,31 @@
 import React from 'react';
 import { BaseEditor, createEditor, Editor, Text, Transforms } from 'slate';
-import { Slate, withReact } from 'slate-react';
+import {
+  ReactEditor,
+  RenderElementProps,
+  RenderLeafProps,
+  Slate,
+  withReact
+} from 'slate-react';
 import { markdownToSlate } from '../../serializers/markdownToSlate';
 import { slateToMarkdown } from '../../serializers/slateToMarkdown';
+import { withHistory } from 'slate-history';
+
+// TODO: Move this out to a separate place. Where?
+export interface IMarkdownPlugin {
+  key: string; // e.g., "bold"
+  onKeyDown?: (event: React.KeyboardEvent, editor: Editor) => boolean;
+  renderLeaf?: (props: RenderLeafProps) => React.JSX.Element;
+  renderElement?: (props: RenderElementProps) => React.JSX.Element;
+  withEditor?: (editor: BaseEditor & ReactEditor) => BaseEditor & ReactEditor;
+  actions?: Record<string, (editor: Editor) => void>;
+}
 
 export interface IMarkdownEditorProviderProps {
+  children: React.ReactNode;
   value?: string;
   onChange?: (val: string) => void;
-  onSave?: () => void; // TODO: do we really need this?
-  children: React.ReactNode;
+  plugins?: IMarkdownPlugin[];
 }
 
 export interface IMarkdownEditorContextType {
@@ -18,9 +35,9 @@ export interface IMarkdownEditorContextType {
   actions: {
     toggleBold: () => void;
     toggleItalic: () => void;
-    save: () => void;
   };
   markdown: string;
+  plugins: IMarkdownPlugin[];
 }
 
 export const MarkdownEditorContext = React.createContext<
@@ -31,9 +48,20 @@ export const MarkdownEditorProvider = ({
   children,
   value,
   onChange,
-  onSave
+  plugins = []
 }: IMarkdownEditorProviderProps) => {
-  const editor = React.useMemo(() => withReact(createEditor()), []);
+  // Create the editor using memoisation, to avoid new editor being created every render
+  // let editor = React.useMemo(() => withReact(createEditor()), []);
+  // editor = React.useMemo(() => withHistory(plugins.reduce((ed, p) => p.withEditor?.(ed) ?? ed, editor)), [plugins]);
+  const baseEditor = React.useMemo(() => withReact(createEditor()), []);
+  const editor = React.useMemo(() => {
+    const withPlugins = plugins.reduce(
+      (ed, plugin) => (plugin.withEditor ? plugin.withEditor(ed) : ed),
+      baseEditor
+    );
+    return withHistory(withPlugins);
+  }, [plugins, baseEditor]);
+
   const initialValue = value
     ? markdownToSlate(value)
     : [{ type: 'paragraph', children: [{ text: '' }] }];
@@ -75,8 +103,7 @@ export const MarkdownEditorProvider = ({
 
   const actions = {
     toggleBold: () => toggleFormat('bold'),
-    toggleItalic: () => toggleFormat('italic'),
-    save: () => onSave?.()
+    toggleItalic: () => toggleFormat('italic')
   };
 
   return (
@@ -86,7 +113,8 @@ export const MarkdownEditorProvider = ({
         value: internalValue,
         setValue,
         actions,
-        markdown: slateToMarkdown(internalValue)
+        markdown: slateToMarkdown(internalValue),
+        plugins
       }}
     >
       <Slate editor={editor} initialValue={internalValue} onChange={setValue}>
