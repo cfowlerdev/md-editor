@@ -8,7 +8,7 @@ export const HorizontalRulePlugin: IMarkdownPlugin = {
     if (element.type === 'hr') {
       return <hr {...attributes} />;
     }
-    return <p {...attributes}>{children}</p>;
+    return undefined;
   },
   actions: {
     insertHorizontalRule: (editor) => {

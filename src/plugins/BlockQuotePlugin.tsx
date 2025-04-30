@@ -8,7 +8,7 @@ export const BlockquotePlugin: IMarkdownPlugin = {
     if (element.type === 'blockquote') {
       return <blockquote {...attributes}>{children}</blockquote>;
     }
-    return <p {...attributes}>{children}</p>;
+    return undefined;
   },
   actions: {
     toggleBlockquote: (editor) => {

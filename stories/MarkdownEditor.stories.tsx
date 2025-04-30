@@ -13,7 +13,7 @@ export default {
 };
 
 const Toolbar = () => {
-  const { editor, actions } = useMarkdownEditor();
+  const { editor, actions, value } = useMarkdownEditor();
 
   return (
     <div style={{ display: 'flex', gap: '8px', padding: '4px' }}>
@@ -40,6 +40,14 @@ const Toolbar = () => {
         }}
       >
         Code
+      </button>
+      <button
+        onMouseDown={(e) => {
+          e.preventDefault();
+          console.log(value);
+        }}
+      >
+        Dump Slate
       </button>
     </div>
   );

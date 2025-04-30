@@ -13,7 +13,7 @@ export const ItalicPlugin: IMarkdownPlugin = {
   renderLeaf: ({ attributes, children, leaf }) => {
     // @ts-expect-error
     if (leaf.italic) return <em {...attributes}>{children}</em>;
-    return <span {...attributes}>{children}</span>;
+    return undefined;
   },
   actions: {
     toggleItalic: (editor) => toggleMark(editor, 'italic')

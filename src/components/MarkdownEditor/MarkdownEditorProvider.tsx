@@ -7,16 +7,16 @@ import {
   Slate,
   withReact
 } from 'slate-react';
+import { withHistory } from 'slate-history';
 import { markdownToSlate } from '../../serializers/markdownToSlate';
 import { slateToMarkdown } from '../../serializers/slateToMarkdown';
-import { withHistory } from 'slate-history';
 
 // TODO: Move this out to a separate place. Where?
 export interface IMarkdownPlugin {
   key: string; // e.g., "bold"
   onKeyDown?: (event: React.KeyboardEvent, editor: Editor) => boolean;
-  renderLeaf?: (props: RenderLeafProps) => React.JSX.Element;
-  renderElement?: (props: RenderElementProps) => React.JSX.Element;
+  renderLeaf?: (props: RenderLeafProps) => React.JSX.Element | undefined;
+  renderElement?: (props: RenderElementProps) => React.JSX.Element | undefined;
   withEditor?: (editor: BaseEditor & ReactEditor) => BaseEditor & ReactEditor;
   actions?: Record<string, (editor: Editor) => void>;
 }

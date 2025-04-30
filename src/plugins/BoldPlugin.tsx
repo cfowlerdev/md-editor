@@ -13,7 +13,7 @@ export const BoldPlugin: IMarkdownPlugin = {
   renderLeaf: ({ attributes, children, leaf }) => {
     // @ts-expect-error
     if (leaf.bold) return <strong {...attributes}>{children}</strong>;
-    return <span {...attributes}>{children}</span>;
+    return undefined;
   },
   actions: {
     toggleBold: (editor) => toggleMark(editor, 'bold')

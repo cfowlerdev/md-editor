@@ -13,7 +13,7 @@ export const StrikethroughPlugin: IMarkdownPlugin = {
   renderLeaf: ({ attributes, children, leaf }) => {
     // @ts-expect-error
     if (leaf.strikethrough) return <s {...attributes}>{children}</s>;
-    return <span {...attributes}>{children}</span>;
+    return undefined;
   },
   actions: {
     toggleStrikethrough: (editor) => toggleMark(editor, 'strikethrough')

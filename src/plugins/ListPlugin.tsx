@@ -10,7 +10,7 @@ export const ListPlugin: IMarkdownPlugin = {
     if (element.type === 'ol') return <ol {...attributes}>{children}</ol>;
     // @ts-expect-error
     if (element.type === 'li') return <li {...attributes}>{children}</li>;
-    return <p {...attributes}>{children}</p>;
+    return undefined;
   },
   actions: {
     setBulletedList: (editor) => {

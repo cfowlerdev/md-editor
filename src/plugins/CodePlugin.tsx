@@ -1,6 +1,5 @@
 import { IMarkdownPlugin } from '../components/MarkdownEditor/MarkdownEditorProvider';
 import { toggleMark } from '../utils/marks';
-import './code.css';
 
 export const CodePlugin: IMarkdownPlugin = {
   key: 'code',
@@ -14,7 +13,7 @@ export const CodePlugin: IMarkdownPlugin = {
   renderLeaf: ({ attributes, children, leaf }) => {
     // @ts-expect-error
     if (leaf.code) return <code {...attributes}>{children}</code>;
-    return <span {...attributes}>{children}</span>;
+    return undefined;
   },
   actions: {
     toggleCode: (editor) => toggleMark(editor, 'code')
