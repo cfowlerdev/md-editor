@@ -1,0 +1,14 @@
+.md-editor-editable {
+  background-color: rgb(140, 160, 148);
+  padding: 40px;
+  font-size: 20px;
+  min-height: 150px;
+  outline: 3px dashed rgb(75, 68, 86);
+  border-radius: 20px;
+  outline-offset: -20px;
+  white-space: pre-wrap;
+}
+
+.md-editor-code {
+  background-color: #5c5b6b;
+}

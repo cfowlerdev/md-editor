@@ -1,12 +1,17 @@
 import { Transforms, Editor, Element } from 'slate';
 import { IMarkdownPlugin } from './types';
+import { CLSNAME_BLOCKQUOTE } from '@constants/classnames';
 
 export const BlockquotePlugin: IMarkdownPlugin = {
   key: 'blockquote',
   renderElement: ({ attributes, children, element }) => {
     // @ts-expect-error
     if (element.type === 'blockquote') {
-      return <blockquote {...attributes}>{children}</blockquote>;
+      return (
+        <blockquote {...attributes} className={CLSNAME_BLOCKQUOTE}>
+          {children}
+        </blockquote>
+      );
     }
     return undefined;
   },

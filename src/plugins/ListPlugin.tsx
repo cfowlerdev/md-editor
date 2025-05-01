@@ -1,15 +1,31 @@
 import { Transforms } from 'slate';
 import { IMarkdownPlugin } from './types';
+import { CLSNAME_LI, CLSNAME_OL, CLSNAME_UL } from '@constants/classnames';
 
 export const ListPlugin: IMarkdownPlugin = {
   key: 'list',
   renderElement: ({ attributes, children, element }) => {
     // @ts-expect-error
-    if (element.type === 'ul') return <ul {...attributes}>{children}</ul>;
+    if (element.type === 'ul')
+      return (
+        <ul {...attributes} className={CLSNAME_UL}>
+          {children}
+        </ul>
+      );
     // @ts-expect-error
-    if (element.type === 'ol') return <ol {...attributes}>{children}</ol>;
+    if (element.type === 'ol')
+      return (
+        <ol {...attributes} className={CLSNAME_OL}>
+          {children}
+        </ol>
+      );
     // @ts-expect-error
-    if (element.type === 'li') return <li {...attributes}>{children}</li>;
+    if (element.type === 'li')
+      return (
+        <li {...attributes} className={CLSNAME_LI}>
+          {children}
+        </li>
+      );
     return undefined;
   },
   actions: {

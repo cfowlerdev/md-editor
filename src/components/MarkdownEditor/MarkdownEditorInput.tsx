@@ -1,7 +1,13 @@
 import React from 'react';
 import { Editable, RenderElementProps, RenderLeafProps } from 'slate-react';
+import { clsx } from 'clsx';
 import { useMarkdownEditor } from '@hooks/useMarkdownEditor';
 import { IMarkdownPlugin } from '@plugins/types';
+import { CLSNAME_EDITABLE } from '@constants/classnames';
+
+export interface IMarkdownEditorInput {
+  editableClassname?: string;
+}
 
 const createRenderLeaf =
   (plugins: IMarkdownPlugin[]) => (props: RenderLeafProps) => {
@@ -34,7 +40,9 @@ const createRenderElement =
     return <p {...props.attributes}>{props.children}</p>;
   };
 
-export const MarkdownEditorInput = () => {
+export const MarkdownEditorInput = ({
+  editableClassname
+}: IMarkdownEditorInput) => {
   const { editor, plugins } = useMarkdownEditor();
 
   const renderLeaf = React.useMemo(() => createRenderLeaf(plugins), [plugins]);
@@ -45,6 +53,7 @@ export const MarkdownEditorInput = () => {
 
   return (
     <Editable
+      className={clsx(CLSNAME_EDITABLE, editableClassname)}
       renderLeaf={renderLeaf}
       renderElement={renderElement}
       onKeyDown={(event) => {

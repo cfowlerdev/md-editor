@@ -1,3 +1,4 @@
+import { CLSNAME_CODE } from '@constants/classnames';
 import { IMarkdownPlugin } from './types';
 import { toggleMark } from '@utils/marks';
 
@@ -12,7 +13,12 @@ export const CodePlugin: IMarkdownPlugin = {
   },
   renderLeaf: ({ attributes, children, leaf }) => {
     // @ts-expect-error
-    if (leaf.code) return <code {...attributes}>{children}</code>;
+    if (leaf.code)
+      return (
+        <code {...attributes} className={CLSNAME_CODE}>
+          {children}
+        </code>
+      );
     return undefined;
   },
   actions: {

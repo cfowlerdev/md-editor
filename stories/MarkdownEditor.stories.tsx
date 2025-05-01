@@ -6,6 +6,7 @@ import {
 } from '../src/components/MarkdownEditor';
 import { useMarkdownEditor } from '../src/hooks/useMarkdownEditor';
 import { coreMarkdownPlugins } from '../src/plugins';
+import './editor.css';
 
 export default {
   title: 'MarkdownEditor/Basic',

@@ -1,3 +1,4 @@
+import { CLSNAME_BOLD } from '@constants/classnames';
 import { IMarkdownPlugin } from './types';
 import { toggleMark } from '@utils/marks';
 
@@ -12,7 +13,12 @@ export const BoldPlugin: IMarkdownPlugin = {
   },
   renderLeaf: ({ attributes, children, leaf }) => {
     // @ts-expect-error
-    if (leaf.bold) return <strong {...attributes}>{children}</strong>;
+    if (leaf.bold)
+      return (
+        <strong {...attributes} className={CLSNAME_BOLD}>
+          {children}
+        </strong>
+      );
     return undefined;
   },
   actions: {

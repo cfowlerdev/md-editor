@@ -3,6 +3,7 @@
     "baseUrl": "src",
     "paths": {
       "@components/*": ["components/*"],
+      "@constants/*": ["constants/*"],
       "@hooks/*": ["hooks/*"],
       "@plugins/*": ["plugins/*"],
       "@serializers/*": ["serializers/*"],

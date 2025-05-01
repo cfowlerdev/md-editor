@@ -1,3 +1,4 @@
+import { CLSNAME_STRIKETHROUGH } from '@constants/classnames';
 import { IMarkdownPlugin } from './types';
 import { toggleMark } from '@utils/marks';
 
@@ -12,7 +13,12 @@ export const StrikethroughPlugin: IMarkdownPlugin = {
   },
   renderLeaf: ({ attributes, children, leaf }) => {
     // @ts-expect-error
-    if (leaf.strikethrough) return <s {...attributes}>{children}</s>;
+    if (leaf.strikethrough)
+      return (
+        <s {...attributes} className={CLSNAME_STRIKETHROUGH}>
+          {children}
+        </s>
+      );
     return undefined;
   },
   actions: {

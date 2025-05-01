@@ -1,3 +1,4 @@
+import { CLSNAME_ITALIC } from '@constants/classnames';
 import { IMarkdownPlugin } from './types';
 import { toggleMark } from '@utils/marks';
 
@@ -12,7 +13,12 @@ export const ItalicPlugin: IMarkdownPlugin = {
   },
   renderLeaf: ({ attributes, children, leaf }) => {
     // @ts-expect-error
-    if (leaf.italic) return <em {...attributes}>{children}</em>;
+    if (leaf.italic)
+      return (
+        <em {...attributes} className={CLSNAME_ITALIC}>
+          {children}
+        </em>
+      );
     return undefined;
   },
   actions: {
