@@ -1,7 +1,7 @@
 import React from 'react';
 import { Editable, RenderElementProps, RenderLeafProps } from 'slate-react';
-import { useMarkdownEditor } from '../../hooks/useMarkdownEditor';
-import { IMarkdownPlugin } from './MarkdownEditorProvider';
+import { useMarkdownEditor } from '@hooks/useMarkdownEditor';
+import { IMarkdownPlugin } from '@plugins/types';
 
 const createRenderLeaf =
   (plugins: IMarkdownPlugin[]) => (props: RenderLeafProps) => {

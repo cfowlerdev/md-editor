@@ -1,5 +1,5 @@
 import { Transforms, Editor, Element } from 'slate';
-import { IMarkdownPlugin } from '../components/MarkdownEditor/MarkdownEditorProvider';
+import { IMarkdownPlugin } from './types';
 
 export const BlockquotePlugin: IMarkdownPlugin = {
   key: 'blockquote',

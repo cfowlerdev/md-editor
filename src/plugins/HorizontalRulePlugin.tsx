@@ -1,9 +1,9 @@
 import { Transforms } from 'slate';
-import { IMarkdownPlugin } from '../components/MarkdownEditor/MarkdownEditorProvider';
+import { IMarkdownPlugin } from './types';
 
 export const HorizontalRulePlugin: IMarkdownPlugin = {
   key: 'hr',
-  renderElement: ({ attributes, children, element }) => {
+  renderElement: ({ attributes, element }) => {
     // @ts-expect-error
     if (element.type === 'hr') {
       return <hr {...attributes} />;

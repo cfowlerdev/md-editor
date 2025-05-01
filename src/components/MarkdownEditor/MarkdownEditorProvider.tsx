@@ -1,25 +1,12 @@
 import React from 'react';
 import { BaseEditor, createEditor, Editor, Text, Transforms } from 'slate';
-import {
-  ReactEditor,
-  RenderElementProps,
-  RenderLeafProps,
-  Slate,
-  withReact
-} from 'slate-react';
+import { Slate, withReact } from 'slate-react';
 import { withHistory } from 'slate-history';
-import { markdownToSlate } from '../../serializers/markdownToSlate';
-import { slateToMarkdown } from '../../serializers/slateToMarkdown';
+import { markdownToSlate } from '@serializers/markdownToSlate';
+import { slateToMarkdown } from '@serializers/slateToMarkdown';
+import { IMarkdownPlugin } from '@plugins/types';
 
 // TODO: Move this out to a separate place. Where?
-export interface IMarkdownPlugin {
-  key: string; // e.g., "bold"
-  onKeyDown?: (event: React.KeyboardEvent, editor: Editor) => boolean;
-  renderLeaf?: (props: RenderLeafProps) => React.JSX.Element | undefined;
-  renderElement?: (props: RenderElementProps) => React.JSX.Element | undefined;
-  withEditor?: (editor: BaseEditor & ReactEditor) => BaseEditor & ReactEditor;
-  actions?: Record<string, (editor: Editor) => void>;
-}
 
 export interface IMarkdownEditorProviderProps {
   children: React.ReactNode;

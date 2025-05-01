@@ -2,7 +2,7 @@ import React from 'react';
 import {
   MarkdownEditorContext,
   IMarkdownEditorContextType
-} from '../components/MarkdownEditor/MarkdownEditorProvider';
+} from '@components/MarkdownEditor/MarkdownEditorProvider';
 
 export const useMarkdownEditor = (): IMarkdownEditorContextType => {
   const ctx = React.useContext(MarkdownEditorContext);

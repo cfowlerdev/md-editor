@@ -1,14 +1,15 @@
 import { defineConfig } from 'vite';
-import { resolve } from 'path';
+import path from 'path';
 import react from '@vitejs/plugin-react';
 import dts from 'vite-plugin-dts';
+import tsconfigPaths from 'vite-tsconfig-paths';
 
 // https://vite.dev/config/
 export default defineConfig({
-  plugins: [react(), dts()],
+  plugins: [react(), tsconfigPaths(), dts()],
   build: {
     lib: {
-      entry: resolve(__dirname, 'src/index.ts'),
+      entry: path.resolve(__dirname, 'src/index.ts'),
       name: 'MDEditor',
       formats: ['es', 'umd'],
       fileName: (format) => `md-editor.${format}.js`

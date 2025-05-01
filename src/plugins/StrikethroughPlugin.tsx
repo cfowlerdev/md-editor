@@ -1,5 +1,5 @@
-import { IMarkdownPlugin } from '../components/MarkdownEditor/MarkdownEditorProvider';
-import { toggleMark } from '../utils/marks';
+import { IMarkdownPlugin } from './types';
+import { toggleMark } from '@utils/marks';
 
 export const StrikethroughPlugin: IMarkdownPlugin = {
   key: 'strikethrough',
